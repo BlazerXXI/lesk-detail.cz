@@ -6,8 +6,10 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- favicon -->
+		<link rel="icon" type="image/jpg" href="favicon.jpg" />
 		<title>
-			Mobilní detailing Pardubice | Tepování interiéru auta – LeskDetail
+			Mobilní detailing Pardubice | Tepování interiéru auta - LeskDetail
 		</title>
 
 		<meta
@@ -59,11 +61,12 @@
 					<li><a href="#ceny">Ceny</a></li>
 					<li><a href="#oblast">Oblast</a></li>
 					<li><a href="#faq">Časté dotazy</a></li>
+					<li><a href="#book">rezervovat</a></li>
 					<li><a href="#kontakt">Kontakt</a></li>
 				</ul>
 				<div class="nav-cta">
 					<a href="tel:+420734676271" class="nav-phone">+420 734 676 271</a>
-					<a href="#kontakt" class="btn btn-primary">Nezávazná poptávka</a>
+					<a href="#kontakt" class="btn btn-primary">Rezervovat</a>
 					<button
 						class="burger"
 						id="burger"
@@ -116,9 +119,7 @@
 						zásuvku.
 					</p>
 					<div class="hero-actions">
-						<a href="#kontakt" class="btn btn-primary"
-							>Chci nezávaznou poptávku</a
-						>
+						<a href="#kontakt" class="btn btn-primary">Chci rezervovat</a>
 						<a href="#sluzby" class="btn btn-ghost">Prohlédnout služby</a>
 					</div>
 					<div class="hero-badges">
@@ -406,7 +407,7 @@
 						Přijedu přímo k vašemu domu nebo na místo, kde máte zaparkované
 						auto. Podmínky a dostupnost služeb domluvíme předem.
 					</p>
-					<a href="#kontakt" class="btn btn-primary"> Nezávazně poptat </a>
+					<a href="#book" class="btn btn-primary"> Rezervovat termín </a>
 				</div>
 			</div>
 		</section>
@@ -529,87 +530,14 @@
 			</div>
 		</section>
 
-		<!-- CONTACT -->
-		<section class="contact" id="kontakt">
-			<div class="wrap contact-grid">
-				<div class="reveal">
-					<div class="eyebrow">Kontakt</div>
-					<h2>Napište nám</h2>
-					<p class="contact-intro">
-						Pošlete poptávku nebo zavolejte. Ozveme se obvykle do několika hodin
-						s konkrétní cenou a volným termínem.
-					</p>
-					<div class="contact-items">
-						<div class="c-item">
-							<div class="c-icon">
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.8"
-								>
-									<path
-										d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"
-									/>
-								</svg>
-							</div>
-							<div>
-								<b>Telefon</b>
-								<a href="tel:+420734676271">+420 734 676 271</a>
-							</div>
-						</div>
-						<!-- <div class="c-item">
-							<div class="c-icon">
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.8"
-								>
-									<rect x="2" y="4" width="20" height="16" rx="2" />
-									<path d="m2 7 10 6 10-6" />
-								</svg>
-							</div>
-							<div>
-								<b>E-mail</b>
-								<a href="mailto:info@leskdetail.cz">info@leskdetail.cz</a>
-							</div>
-						</div> -->
-						<div class="c-item">
-							<div class="c-icon">
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.8"
-								>
-									<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-									<circle cx="12" cy="10" r="3" />
-								</svg>
-							</div>
-							<div>
-								<b>Působnost</b>
-								<span>Pardubice a Pardubický kraj</span>
-							</div>
-						</div>
-					</div>
-					<div class="hours">
-						<b>Provozní doba:</b> Po-Pá 8:00-19:00 · So 9:00-16:00 · Ne po
-						domluvě<br />
-						Výjezdy mimo pracovní dobu možné na základě dohody.
-					</div>
-				</div>
-
-				<form id="contact-form" novalidate>
-					<h3>Dejte nám vědět</h3>
+		<!-- BOOK -->
+		<section class="book" id="book">
+			<div class="wrap">
+				<form id="book-form" novalidate>
+					<h3>Rezervovací formulář</h3>
 					<p class="form-sub">
-						Vyplňte pár údajů a my se vám ozveme s nabídkou.
+						Vyplňte prosím formulář níže a my se vám ozveme zpět pro potvrzení
+						termínu a detailů čištění.
 					</p>
 					<div class="field-row">
 						<div class="field">
@@ -641,7 +569,7 @@
 								Nejprve vyberte třídu vozidla v ceníku
 							</option>
 						</select>
-						<span class="field-hint"
+						<span class="field-hint form-sub"
 							>Výběr můžete změnit i zde — automaticky se aktualizuje také v
 							ceníku.</span
 						>
@@ -667,7 +595,7 @@
 							</div>
 						</div>
 
-						<span class="field-hint">
+						<span class="field-hint form-sub">
 							Můžete vybrat více služeb najednou.
 						</span>
 					</div>
@@ -682,14 +610,19 @@
 						/>
 					</div>
 
-					<div class="field-row">
-						<div class="field">
-							<label for="booking-date">Datum rezervace *</label>
-							<input type="date" id="booking-date" name="date" required />
-						</div>
+					<div class="booking-calendar">
+						<div id="booking-calendar"></div>
 
-						<div class="field">
-							<label for="booking-time">Čas rezervace *</label>
+						<input type="hidden" id="booking-date" name="date" required />
+
+						<div
+							id="booking-combination-notice"
+							class="booking-combination-notice"
+							hidden
+						></div>
+
+						<div class="booking-time-dropdown" id="booking-times" hidden>
+							<label for="booking-time">Vyberte volný čas *</label>
 							<select id="booking-time" name="time" required disabled>
 								<option value="">Nejprve vyberte datum</option>
 							</select>
@@ -723,6 +656,135 @@
 					<button type="submit" class="btn btn-primary">Objednat</button>
 					<div class="form-status" id="form-status" role="status"></div>
 				</form>
+			</div>
+		</section>
+
+		<!-- CONTACT -->
+		<section class="contact" id="kontakt">
+			<div class="reveal wrap contact-grid">
+				<div class="contact-content">
+					<div class="eyebrow">Kontakt</div>
+					<h2>Kontaktujte nás</h2>
+					<p class="contact-intro">
+						Proveďte rezervaci nebo nám zavolejte. Žádosti obvykle vyřizujeme
+						během několika hodin a sdělíme vám konkrétní cenu.
+					</p>
+				</div>
+				<div class="contact-items">
+					<div class="c-item">
+						<div class="c-icon">
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+							>
+								<path
+									d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"
+								/>
+							</svg>
+						</div>
+						<div>
+							<b>Telefon</b>
+							<a href="tel:+420734676271">+420 734 676 271</a>
+						</div>
+					</div>
+					<div class="c-item">
+						<div class="c-icon">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								fill="currentColor"
+								class="bi bi-whatsapp"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"
+								/>
+							</svg>
+						</div>
+						<div>
+							<b>WhatsApp</b>
+							<a
+								href="https://wa.me/+420734676271"
+								target="_blank"
+								rel="noopener noreferrer nofollow"
+								>+420 734 676 271</a
+							>
+						</div>
+					</div>
+					<div class="c-item">
+						<div class="c-icon">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								fill="currentColor"
+								class="bi bi-instagram"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"
+								/>
+							</svg>
+						</div>
+						<div>
+							<b>Náš profil</b>
+							<a
+								href="https://www.instagram.com/leskdetail.cz/"
+								target="_blank"
+								rel="noopener noreferrer nofollow"
+								>Instagram</a
+							>
+						</div>
+					</div>
+					<!-- <div class="c-item">
+							<div class="c-icon">
+								<svg
+									width="20"
+									height="20"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+								>
+									<rect x="2" y="4" width="20" height="16" rx="2" />
+									<path d="m2 7 10 6 10-6" />
+								</svg>
+							</div>
+							<div>
+								<b>E-mail</b>
+								<a href="mailto:info@leskdetail.cz">info@leskdetail.cz</a>
+							</div>
+						</div> -->
+					<div class="c-item">
+						<div class="c-icon">
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+							>
+								<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+								<circle cx="12" cy="10" r="3" />
+							</svg>
+						</div>
+						<div>
+							<b>Působnost</b>
+							<span>Pardubice a Pardubický kraj</span>
+						</div>
+					</div>
+				</div>
+				<div class="hours">
+					<b>Provozní doba:</b> Po-Pá 7:00-20:00 · So 8:00-20:00 · Ne po
+					domluvě<br />
+					Výjezdy mimo pracovní dobu možné na základě dohody.
+				</div>
 			</div>
 		</section>
 

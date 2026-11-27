@@ -16,66 +16,6 @@ if (burger && navLinks) {
 	});
 }
 
-// !!! TEMPORARY translation !!!
-// English translation button
-(() => {
-	const header = document.querySelector("header");
-	if (!header) return;
-	const translateButton = document.createElement("button");
-	translateButton.type = "button";
-	translateButton.textContent = "EN";
-	translateButton.setAttribute("aria-label", "Translate page to English");
-	translateButton.style.cssText =
-		"cursor:pointer;margin:8px;padding:8px 12px;border:1px solid currentColor;border-radius:4px;background:transparent;color:rgba(255, 255, 255, 0.78);font:inherit";
-	const buttonHost = navLinks || header.querySelector("nav") || header;
-	buttonHost.appendChild(translateButton);
-
-	const widget = document.createElement("div");
-	widget.id = "google_translate_element";
-	widget.style.display = "none";
-	document.body.appendChild(widget);
-
-	let widgetReady = false;
-	let scriptLoading = false;
-	let translationRequested = false;
-	const applyEnglish = () => {
-		const languageSelect = document.querySelector(".goog-te-combo");
-		if (languageSelect) {
-			languageSelect.value = "en";
-			languageSelect.dispatchEvent(new Event("change", { bubbles: true }));
-			translationRequested = false;
-		} else if (translationRequested) {
-			window.setTimeout(applyEnglish, 250);
-		}
-	};
-
-	window.googleTranslateElementInit = function () {
-		new window.google.translate.TranslateElement(
-			{ pageLanguage: "cs", includedLanguages: "en", autoDisplay: false },
-			"google_translate_element",
-		);
-		widgetReady = true;
-		if (translationRequested) applyEnglish();
-	};
-
-	translateButton.addEventListener("click", function () {
-		translationRequested = true;
-		if (widgetReady) {
-			applyEnglish();
-		} else if (!scriptLoading) {
-			scriptLoading = true;
-			const script = document.createElement("script");
-			script.src =
-				"https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-			script.onerror = function () {
-				scriptLoading = false;
-				translationRequested = false;
-			};
-			document.head.appendChild(script);
-		}
-	});
-})();
-
 // Hero slider
 (() => {
 	const slides = document.querySelectorAll("#top .hero-slide");
@@ -373,7 +313,7 @@ function syncSelectedButtons() {
 		const selected = selectedServices.has(button.dataset.service);
 
 		button.classList.toggle("selected", selected);
-		button.textContent = selected ? "Vybráno ✓" : "Objednat";
+		button.textContent = selected ? "Vybráno ✓" : "Vybrat";
 	});
 }
 
@@ -403,7 +343,7 @@ if (serviceSelect) {
 	});
 }
 
-// Recalculate when vehicle class changes
+// Recalculate prices and availability when vehicle class changes
 if (carTypeSelect) {
 	carTypeSelect.addEventListener("change", () => {
 		if (carTypeFormSelect) {
@@ -411,6 +351,7 @@ if (carTypeSelect) {
 		}
 
 		updateTotalPrice();
+		loadBookingSlots();
 	});
 }
 
@@ -505,7 +446,7 @@ fetch("./data.json")
                                 class="price-amount"
                                 data-base-price="${item.price}"
                             >
-${formatStartingPrice(item.price)}
+															${formatStartingPrice(item.price)}
                             </div>
 
                             <p class="price-desc">${item.description}</p>
@@ -541,6 +482,7 @@ ${formatStartingPrice(item.price)}
 
 		updateTotalPrice();
 		syncSelectedButtons();
+		loadBookingSlots();
 	})
 	.catch((error) => {
 		console.error("Chyba při načítání data.json:", error);
@@ -728,132 +670,406 @@ if (mapElement && typeof L !== "undefined") {
 }
 
 // ========================================
-// GOOGLE CALENDAR — AVAILABLE BOOKING SLOTS
+// BOOKING CALENDAR — AVAILABLE DAYS + SERVICE COMBINATIONS + TIME SLOTS
 // ========================================
 
 const BOOKING_API_URL =
 	"https://script.google.com/macros/s/AKfycbxSXG1RVhQYMCFbKREmOlVHzxAgDe01XtoxzgYrQ-CaOnjHLrE4td18Gc5MtgrmBIC4/exec";
 
+const bookingCalendar = document.getElementById("booking-calendar");
 const bookingDate = document.getElementById("booking-date");
 const bookingTime = document.getElementById("booking-time");
+const bookingTimesContainer = document.getElementById("booking-times");
 
-let slotsRequestId = 0;
+let currentMonth = new Date();
+currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
 
-async function loadBookingSlots() {
-	if (!bookingDate || !bookingTime) return;
+let availableDates = new Set();
+let availableCombinationsByDate = {};
+let monthCache = new Map();
 
-	const date = bookingDate.value;
-	const carTypeId = carTypeFormSelect?.value || "";
-	const serviceIds = Array.from(selectedServices.keys());
+// Услуги, которые клиент фактически выбрал для бронирования.
+// Это может быть только часть первоначально выбранных услуг.
+let bookingServiceIds = [];
+
+let bookingCombinationSelect = null;
+let bookingCombinationSummary = null;
+
+let monthRequestId = 0;
+
+const monthNames = [
+	"leden",
+	"únor",
+	"březen",
+	"duben",
+	"květen",
+	"červen",
+	"červenec",
+	"srpen",
+	"září",
+	"říjen",
+	"listopad",
+	"prosinec",
+];
+
+const weekdays = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
+
+function getLocalDateString(date) {
+	return [
+		date.getFullYear(),
+		String(date.getMonth() + 1).padStart(2, "0"),
+		String(date.getDate()).padStart(2, "0"),
+	].join("-");
+}
+
+function getBookingParameters() {
+	return {
+		carTypeId: carTypeFormSelect?.value || "",
+		serviceIds: Array.from(selectedServices.keys()).sort(),
+	};
+}
+
+// Сброс выбора времени и комбинации
+function resetBookingTimes(message = "Nejprve vyberte datum") {
+	if (bookingTime) {
+		bookingTime.replaceChildren();
+
+		const option = document.createElement("option");
+		option.value = "";
+		option.textContent = message;
+
+		bookingTime.appendChild(option);
+		bookingTime.value = "";
+		bookingTime.disabled = true;
+	}
+
+	bookingServiceIds = [];
+
+	if (bookingCombinationSelect) {
+		bookingCombinationSelect.replaceChildren();
+		bookingCombinationSelect.disabled = true;
+	}
+
+	if (bookingCombinationSummary) {
+		bookingCombinationSummary.textContent = "";
+	}
+}
+
+// Показываем выбранную комбинацию и её доступное время
+function renderCombinationDetails(combination) {
+	if (!combination || !bookingTime) return;
+
+	bookingServiceIds = [...combination.serviceIds];
+
+	if (bookingCombinationSummary) {
+		const names = combination.serviceIds.map((id) => {
+			const service = catalog.find((item) => item.id === id);
+			return service?.name || id;
+		});
+
+		bookingCombinationSummary.textContent =
+			`${names.join(" + ")} · ${combination.durationHours} h · ` +
+			`${Number(combination.price).toLocaleString("cs-CZ")} Kč`;
+	}
 
 	bookingTime.replaceChildren();
 
-	if (!date || !carTypeId || serviceIds.length === 0) {
-		bookingTime.disabled = true;
+	const firstOption = document.createElement("option");
+	firstOption.value = "";
+	firstOption.textContent = combination.slots?.length
+		? "Vyberte čas"
+		: "Žádné volné termíny";
 
+	bookingTime.appendChild(firstOption);
+
+	(combination.slots || []).forEach((slot) => {
 		const option = document.createElement("option");
-		option.value = "";
-		option.textContent = "Vyberte datum, vozidlo a služby";
+		option.value = slot.start;
+		option.textContent = `${slot.start} – ${slot.end}`;
 		bookingTime.appendChild(option);
+	});
 
+	bookingTime.disabled = !combination.slots?.length;
+}
+
+// Отрисовка календаря
+function renderBookingCalendar() {
+	if (!bookingCalendar) return;
+
+	bookingCalendar.replaceChildren();
+
+	const header = document.createElement("div");
+	header.className = "booking-calendar-header";
+
+	const prevButton = document.createElement("button");
+	prevButton.type = "button";
+	prevButton.className = "booking-calendar-nav";
+	prevButton.textContent = "‹";
+	prevButton.setAttribute("aria-label", "Předchozí měsíc");
+
+	const monthTitle = document.createElement("strong");
+	monthTitle.textContent =
+		monthNames[currentMonth.getMonth()] + " " + currentMonth.getFullYear();
+
+	const nextButton = document.createElement("button");
+	nextButton.type = "button";
+	nextButton.className = "booking-calendar-nav";
+	nextButton.textContent = "›";
+	nextButton.setAttribute("aria-label", "Další měsíc");
+
+	prevButton.addEventListener("click", () => {
+		currentMonth.setMonth(currentMonth.getMonth() - 1);
+		loadBookingSlots();
+	});
+
+	nextButton.addEventListener("click", () => {
+		currentMonth.setMonth(currentMonth.getMonth() + 1);
+		loadBookingSlots();
+	});
+
+	header.append(prevButton, monthTitle, nextButton);
+	bookingCalendar.appendChild(header);
+
+	const grid = document.createElement("div");
+	grid.className = "booking-calendar-grid";
+
+	weekdays.forEach((day) => {
+		const element = document.createElement("div");
+		element.className = "booking-weekday";
+		element.textContent = day;
+		grid.appendChild(element);
+	});
+
+	const year = currentMonth.getFullYear();
+	const month = currentMonth.getMonth();
+
+	const firstDay = new Date(year, month, 1);
+	const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+	// Monday = 0, Sunday = 6
+	const offset = (firstDay.getDay() + 6) % 7;
+
+	for (let i = 0; i < offset; i++) {
+		const empty = document.createElement("div");
+		empty.className = "booking-day-empty";
+		grid.appendChild(empty);
+	}
+
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
+	for (let day = 1; day <= daysInMonth; day++) {
+		const date = new Date(year, month, day);
+		const dateString = getLocalDateString(date);
+
+		const button = document.createElement("button");
+		button.type = "button";
+		button.className = "booking-day";
+		button.textContent = day;
+
+		const isAvailable = availableDates.has(dateString);
+		const isPast = date < today;
+		const isSelected = bookingDate?.value === dateString;
+
+		if (!isAvailable || isPast) {
+			button.disabled = true;
+			button.classList.add("unavailable");
+		} else {
+			button.classList.add("available");
+
+			button.addEventListener("click", () => {
+				bookingDate.value = dateString;
+
+				renderBookingCalendar();
+				loadSelectedDateSlots();
+			});
+		}
+
+		if (isSelected) {
+			button.classList.add("selected");
+		}
+
+		grid.appendChild(button);
+	}
+
+	bookingCalendar.appendChild(grid);
+}
+
+// Загружаем доступность всего месяца одним запросом
+async function loadBookingSlots() {
+	if (!bookingCalendar || !bookingDate || !bookingTime) return;
+
+	const { carTypeId, serviceIds } = getBookingParameters();
+
+	const month = [
+		currentMonth.getFullYear(),
+		String(currentMonth.getMonth() + 1).padStart(2, "0"),
+	].join("-");
+
+	if (!carTypeId || serviceIds.length === 0) {
+		availableDates.clear();
+		availableCombinationsByDate = {};
+		bookingDate.value = "";
+
+		resetBookingTimes("Vyberte vozidlo a služby");
+
+		if (bookingTimesContainer) {
+			bookingTimesContainer.hidden = true;
+		}
+
+		renderBookingCalendar();
 		return;
 	}
 
-	const requestId = ++slotsRequestId;
+	if (bookingTimesContainer) {
+		bookingTimesContainer.hidden = false;
+	}
 
-	bookingTime.disabled = true;
-
-	const loadingOption = document.createElement("option");
-	loadingOption.textContent = "Načítáme volné termíny...";
-	bookingTime.appendChild(loadingOption);
+	const cacheKey = `${month}|${carTypeId}|${serviceIds.join(",")}`;
+	const requestId = ++monthRequestId;
 
 	try {
-		const params = new URLSearchParams({
-			action: "slots",
-			date: date,
-			serviceIds: JSON.stringify(serviceIds),
-			carTypeId: carTypeId,
-		});
+		let monthData = monthCache.get(cacheKey);
 
-		const response = await fetch(`${BOOKING_API_URL}?${params.toString()}`);
+		if (!monthData) {
+			bookingCalendar.classList.add("loading");
 
-		if (!response.ok) {
-			throw new Error("Nepodařilo se načíst termíny.");
+			const params = new URLSearchParams({
+				action: "month",
+				month: month,
+				serviceIds: JSON.stringify(serviceIds),
+				carTypeId: carTypeId,
+			});
+
+			const response = await fetch(`${BOOKING_API_URL}?${params.toString()}`);
+
+			if (!response.ok) {
+				throw new Error("Nepodařilo se načíst dostupné dny.");
+			}
+
+			const result = await response.json();
+
+			if (!result.success) {
+				throw new Error(result.error || "Chyba při načítání kalendáře.");
+			}
+
+			monthData = result.data;
+			monthCache.set(cacheKey, monthData);
 		}
 
-		const result = await response.json();
+		if (requestId !== monthRequestId) return;
 
-		if (requestId !== slotsRequestId) return;
+		availableDates = new Set(monthData.dates || []);
+		availableCombinationsByDate = monthData.combinationsByDate || {};
 
-		if (!result.success) {
-			throw new Error(result.error || "Chyba při načítání termínů.");
+		bookingCalendar.classList.remove("loading");
+
+		if (bookingDate.value && !availableDates.has(bookingDate.value)) {
+			bookingDate.value = "";
+			resetBookingTimes("Vyberte dostupný den");
 		}
 
-		bookingTime.replaceChildren();
+		renderBookingCalendar();
 
-		const firstOption = document.createElement("option");
-		firstOption.value = "";
-		firstOption.textContent = result.data.length
-			? "Vyberte čas"
-			: "Žádné volné termíny";
-
-		bookingTime.appendChild(firstOption);
-
-		result.data.forEach((slot) => {
-			const option = document.createElement("option");
-
-			option.value = slot.start;
-			option.textContent = `${slot.start} – ${slot.end}`;
-
-			bookingTime.appendChild(option);
-		});
-
-		bookingTime.disabled = result.data.length === 0;
+		if (bookingDate.value) {
+			loadSelectedDateSlots();
+		} else {
+			resetBookingTimes("Nejprve vyberte datum");
+		}
 	} catch (error) {
-		console.error("Booking slots error:", error);
+		console.error("Booking calendar error:", error);
 
-		if (requestId !== slotsRequestId) return;
+		if (requestId !== monthRequestId) return;
 
-		bookingTime.replaceChildren();
+		bookingCalendar.classList.remove("loading");
+		bookingCalendar.textContent = "Kalendář se nepodařilo načíst.";
 
-		const option = document.createElement("option");
-		option.value = "";
-		option.textContent = "Chyba načítání. Zkuste znovu.";
-
-		bookingTime.appendChild(option);
-		bookingTime.disabled = true;
+		resetBookingTimes("Chyba načítání kalendáře");
 	}
 }
 
-if (bookingDate) {
-	bookingDate.addEventListener("change", loadBookingSlots);
+// Показываем доступные комбинации услуг для выбранной даты
+function loadSelectedDateSlots() {
+	if (!bookingDate || !bookingTime) return;
+
+	const date = bookingDate.value;
+
+	if (!date) {
+		if (bookingTimesContainer) {
+			bookingTimesContainer.hidden = true;
+		}
+
+		resetBookingTimes("Nejprve vyberte datum");
+		return;
+	}
+
+	const combinations = availableCombinationsByDate[date] || [];
+
+	if (bookingTimesContainer) {
+		bookingTimesContainer.hidden = false;
+	}
+
+	const requestedIds = getBookingParameters().serviceIds;
+	const requestedKey = [...requestedIds].sort().join(",");
+
+	const exactCombination = combinations.find((combination) => {
+		return [...combination.serviceIds].sort().join(",") === requestedKey;
+	});
+
+	const notice = document.getElementById("booking-combination-notice");
+
+	if (!exactCombination) {
+		if (notice) {
+			notice.hidden = false;
+			notice.innerHTML = `
+				<strong>Všechny vybrané služby se bohužel nevejdou do jednoho dne.</strong>
+				<p>Pro tento den není dostatek času na provedení všech vybraných služeb. Zkuste prosím vybrat jiný den nebo jiné služby.</p>
+			`;
+		}
+
+		resetBookingTimes("Vyberte prosím jiný den");
+		return;
+	}
+
+	if (notice) {
+		notice.hidden = true;
+	}
+
+	bookingServiceIds = [...requestedIds];
+
+	const slots = exactCombination.slots || [];
+
+	if (!slots.length) {
+		resetBookingTimes("Žádné volné termíny");
+		return;
+	}
+
+	bookingTime.innerHTML = '<option value="">Vyberte čas</option>';
+
+	slots.forEach((slot) => {
+		const option = document.createElement("option");
+		option.value = slot.start;
+		option.textContent = `${slot.start} – ${slot.end}`;
+		bookingTime.appendChild(option);
+	});
+
+	bookingTime.disabled = false;
 }
 
-// Reload slots when selected services change
+// Первоначальная отрисовка календаря
+renderBookingCalendar();
+
+// Перезагрузка доступности при изменении услуг или автомобиля
 if (serviceCheckboxes) {
 	serviceCheckboxes.addEventListener("change", loadBookingSlots);
 }
 
-// Reload slots when vehicle class changes
 if (carTypeFormSelect) {
 	carTypeFormSelect.addEventListener("change", loadBookingSlots);
 }
-
-// Set minimum booking date to today
-if (bookingDate) {
-	const today = new Date();
-	const localToday = [
-		today.getFullYear(),
-		String(today.getMonth() + 1).padStart(2, "0"),
-		String(today.getDate()).padStart(2, "0"),
-	].join("-");
-
-	bookingDate.min = localToday;
-}
-
 // Contact form -> Formspree
 
-var form = document.getElementById("contact-form");
+var form = document.getElementById("book-form");
 var formStatus = document.getElementById("form-status");
 
 if (!formStatus) {
@@ -928,6 +1144,7 @@ if (form) {
 
 		if (submitButton) {
 			submitButton.disabled = true;
+			submitButton.classList.add("loading-button");
 		}
 
 		showFormStatus("Odesíláme žádost o rezervaci...");
@@ -957,6 +1174,42 @@ if (form) {
 
 			form.reset();
 			selectedServices.clear();
+			submitButton.classList.remove("loading-button");
+
+			// Сбрасываем календарь после успешной брони
+
+			const today = new Date();
+			currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+			// Очищаем выбранную дату и время
+			if (bookingDate) {
+				bookingDate.value = "";
+			}
+
+			if (bookingTime) {
+				resetBookingTimes("Nejprve vyberte datum");
+			}
+
+			// Скрываем выпадающий список времени
+			const timeDropdown = document.getElementById("booking-times");
+			if (timeDropdown) {
+				timeDropdown.hidden = true;
+			}
+
+			// Очищаем доступность и выбранные слоты
+			availableDates.clear();
+			availableCombinationsByDate = {};
+			bookingServiceIds = [];
+			monthCache.clear();
+
+			// Сбрасываем визуальное состояние календаря
+			if (bookingCalendar) {
+				bookingCalendar.classList.remove("loading");
+			}
+
+			// Показываем календарь заново
+			renderBookingCalendar();
+			// Загружаем календарь с учётом сброшенных услуг и автомобиля
+			loadBookingSlots();
 
 			if (carTypeSelect) {
 				carTypeSelect.value = "";

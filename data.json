@@ -1,165 +1,164 @@
-
 {
-  "catalog": [
-    {
-      "id": "basic-interior",
-      "name": "Běžné čištění interiéru",
-      "description": "Pravidelné čištění interiéru pro udržení čistoty a svěžího vzhledu.",
-      "features": [
-        "Důkladné vysátí interiéru a zavazadlového prostoru",
-        "Čištění palubní desky a vnitřních plastů",
-        "Čištění vnitřních částí dveří",
-        "Čištění vnitřních skel",
-        "Ošetření plastových povrchů",
-        "Orientačně 1,5–2,5 hodiny"
-      ],
+	"catalog": [
+		{
+			"id": "basic-interior",
+			"name": "Běžné čištění interiéru",
+			"description": "Pravidelné čištění interiéru pro udržení čistoty a svěžího vzhledu.",
+			"features": [
+				"Důkladné vysátí interiéru a zavazadlového prostoru",
+				"Čištění palubní desky a vnitřních plastů",
+				"Čištění vnitřních částí dveří",
+				"Čištění vnitřních skel",
+				"Ošetření plastových povrchů",
+				"Orientačně 1,5–2,5 hodiny"
+			],
 			"duration": 2,
-      "price": 990,
-      "active": true
-    },
-    {
-      "id": "detailed-interior",
-      "name": "Detailní čištění interiéru",
-      "description": "Důkladnější péče o interiér včetně detailů a hůře dostupných míst.",
-      "features": [
-        "Vše z běžného čištění interiéru",
-        "Čištění ventilačních otvorů a jejich lamel",
-        "Detailní čištění spár, záhybů a těžko dostupných míst",
-        "Čištění gumového těsnění a dveřních průchodek",
-        "Čištění dveřních pantů, omezovačů a zámků",
-        "Orientačně 2,5–3,5 hodiny"
-      ],
+			"price": 900,
+			"active": true
+		},
+		{
+			"id": "detailed-interior",
+			"name": "Detailní čištění interiéru",
+			"description": "Důkladnější péče o interiér včetně detailů a hůře dostupných míst.",
+			"features": [
+				"Vše z běžného čištění interiéru",
+				"Čištění ventilačních otvorů a jejich lamel",
+				"Detailní čištění spár, záhybů a těžko dostupných míst",
+				"Čištění gumového těsnění a dveřních průchodek",
+				"Čištění dveřních pantů, omezovačů a zámků",
+				"Orientačně 2,5–3,5 hodiny"
+			],
 			"duration": 4,
-      "price": 1590,
-      "active": true
-    },
-    {
-      "id": "deep-interior",
-      "name": "Hloubkové čištění interiéru",
-      "description": "Komplexní hloubkové čištění včetně tepování textilních povrchů.",
-      "features": [
-        "Vše z detailního čištění interiéru",
-        "Tepování textilních sedadel a koberců",
-        "Odstranění běžných skvrn a nečistot z textilu",
-        "Čištění a ošetření kožených povrchů dle materiálu",
-        "Důkladné čištění podlahy a zavazadlového prostoru",
-        "Orientačně 4–6 hodin"
-      ],
+			"price": 1500,
+			"active": true
+		},
+		{
+			"id": "deep-interior",
+			"name": "Hloubkové čištění interiéru",
+			"description": "Komplexní hloubkové čištění včetně tepování textilních povrchů.",
+			"features": [
+				"Vše z detailního čištění interiéru",
+				"Tepování textilních sedadel a koberců",
+				"Odstranění běžných skvrn a nečistot z textilu",
+				"Čištění a ošetření kožených povrchů dle materiálu",
+				"Důkladné čištění podlahy a zavazadlového prostoru",
+				"Orientačně 4–6 hodin"
+			],
 			"duration": 6,
-      "price": 2490,
-      "active": true
-    },
-    {
-      "id": "upholstery-cleaning",
-      "name": "Tepování sedadel a koberců",
-      "description": "Samostatné hloubkové čištění textilních sedadel a koberců.",
-      "features": [
-        "Extrakční čištění textilních sedadel",
-        "Tepování koberečků a vybraných textilních ploch",
-        "Ošetření běžných skvrn",
-        "Orientačně 1,5–2,5 hodiny"
-      ],
+			"price": 2500,
+			"active": true
+		},
+		{
+			"id": "upholstery-cleaning",
+			"name": "Tepování sedadel a koberců",
+			"description": "Samostatné hloubkové čištění textilních sedadel a koberců.",
+			"features": [
+				"Extrakční čištění textilních sedadel",
+				"Tepování koberečků a vybraných textilních ploch",
+				"Ošetření běžných skvrn",
+				"Orientačně 1,5–2,5 hodiny"
+			],
 			"duration": 3,
-      "price": 1490,
-      "active": true
-    },
-    {
-      "id": "headlight-polishing",
-      "name": "Leštění světlometů",
-      "description": "Renovace zašlých a zažloutlých předních světlometů. Cena za pár.",
-      "features": [
-        "Příprava a broušení povrchu",
-        "Strojní leštění plastu",
-        "Odstranění oxidace a zákalu",
-        "Aplikace ochranné vrstvy proti UV záření",
-        "Orientačně 1–2 hodiny"
-      ],
+			"price": 1300,
+			"active": true
+		},
+		{
+			"id": "headlight-polishing",
+			"name": "Leštění světlometů",
+			"description": "Renovace zašlých a zažloutlých předních světlometů. Cena za pár.",
+			"features": [
+				"Příprava a broušení povrchu",
+				"Strojní leštění plastu",
+				"Odstranění oxidace a zákalu",
+				"Aplikace ochranné vrstvy proti UV záření",
+				"Orientačně 1–2 hodiny"
+			],
 			"duration": 2,
-      "price": 1200,
-      "active": true
-    },
-    {
-      "id": "engine-bay-cleaning",
-      "name": "Mytí motorového prostoru",
-      "description": "Čištění motorového prostoru po individuální domluvě.",
-      "features": [
-        "Šetrné čištění dostupných částí",
-        "Ošetření vhodných plastových povrchů",
-        "Cena a rozsah dle stavu vozidla"
-      ],
+			"price": 700,
+			"active": true
+		},
+		{
+			"id": "engine-bay-cleaning",
+			"name": "Mytí motorového prostoru",
+			"description": "Čištění motorového prostoru po individuální domluvě.",
+			"features": [
+				"Šetrné čištění dostupných částí",
+				"Ošetření vhodných plastových povrchů",
+				"Cena a rozsah dle stavu vozidla"
+			],
 			"duration": 2,
-      "price": 900,
-      "active": false
-    },
-    {
-      "id": "sale-preparation",
-      "name": "Kompletní péče o interiér a světlomety",
-      "description": "Individuální balíček pro přípravu vozidla na prodej.",
-      "features": [
-        "Hloubkové čištění interiéru",
-        "Renovace předních světlometů",
-        "Fotografie před a po",
-        "Cena dle velikosti a stavu vozidla"
-      ],
+			"price": 900,
+			"active": false
+		},
+		{
+			"id": "sale-preparation",
+			"name": "Kompletní péče o interiér a světlomety",
+			"description": "Individuální balíček pro přípravu vozidla na prodej.",
+			"features": [
+				"Hloubkové čištění interiéru",
+				"Renovace předních světlometů",
+				"Fotografie před a po",
+				"Cena dle velikosti a stavu vozidla"
+			],
 			"duration": 8,
-      "price": 3290,
-      "active": false
-    }
-  ],
-  "carTypes": [
-    {
-      "id": "small",
-      "name": "Malá městská auta",
-      "examples": "Škoda Fabia, VW Polo, Toyota Yaris, Hyundai i20, Kia Rio, Opel Corsa",
-      "multiplier": 1.0
-    },
-    {
-      "id": "compact",
-      "name": "Kompaktní vozy",
-      "examples": "VW Golf, Ford Focus, Opel Astra, Škoda Scala, Seat Leon, Hyundai i30, Kia Ceed",
-      "multiplier": 1.05
-    },
-    {
-      "id": "middle",
-      "name": "Střední třída",
-      "examples": "Škoda Octavia, VW Passat, Ford Mondeo, Škoda Superb, Mazda 6, Toyota Avensis",
-      "multiplier": 1.15
-    },
-    {
-      "id": "large-wagon",
-      "name": "Velké kombi a prémiové vozy",
-      "examples": "BMW řady 5 Touring, Mercedes-Benz E Kombi, Audi A6 Avant, Volvo V90",
-      "multiplier": 1.2
-    },
-    {
-      "id": "compact-suv",
-      "name": "Kompaktní SUV",
-      "examples": "VW T-Roc, VW Tiguan, Ford Kuga, BMW X1, Nissan Qashqai, Hyundai Tucson",
-      "multiplier": 1.15
-    },
-    {
-      "id": "middle-suv",
-      "name": "Střední a velké SUV",
-      "examples": "Škoda Kodiaq, BMW X3, Audi Q5, Mercedes-Benz GLC, Volvo XC60",
-      "multiplier": 1.25
-    },
-    {
-      "id": "large-suv",
-      "name": "Velká SUV",
-      "examples": "BMW X5, Audi Q7, VW Touareg, Mercedes-Benz GLE, Volvo XC90",
-      "multiplier": 1.35
-    },
-    {
-      "id": "mpv",
-      "name": "7místná SUV a MPV",
-      "examples": "Škoda Kodiaq 7 míst, VW Sharan, Ford Galaxy, Seat Alhambra",
-      "multiplier": 1.35
-    },
-    {
-      "id": "van",
-      "name": "Velké dodávky a mikrobusy",
-      "examples": "VW Transporter, Mercedes-Benz Vito, Ford Transit Custom, Renault Trafic",
-      "multiplier": 1.5
-    }
-  ]
+			"price": 3290,
+			"active": false
+		}
+	],
+	"carTypes": [
+		{
+			"id": "small",
+			"name": "Malá městská auta",
+			"examples": "Škoda Fabia, VW Polo, Toyota Yaris, Hyundai i20, Kia Rio, Opel Corsa",
+			"multiplier": 1.0
+		},
+		{
+			"id": "compact",
+			"name": "Kompaktní vozy",
+			"examples": "VW Golf, Ford Focus, Opel Astra, Škoda Scala, Seat Leon, Hyundai i30, Kia Ceed",
+			"multiplier": 1.05
+		},
+		{
+			"id": "middle",
+			"name": "Střední třída",
+			"examples": "Škoda Octavia, VW Passat, Ford Mondeo, Škoda Superb, Mazda 6, Toyota Avensis",
+			"multiplier": 1.15
+		},
+		{
+			"id": "large-wagon",
+			"name": "Velké kombi a prémiové vozy",
+			"examples": "BMW řady 5 Touring, Mercedes-Benz E Kombi, Audi A6 Avant, Volvo V90",
+			"multiplier": 1.2
+		},
+		{
+			"id": "compact-suv",
+			"name": "Kompaktní SUV",
+			"examples": "VW T-Roc, VW Tiguan, Ford Kuga, BMW X1, Nissan Qashqai, Hyundai Tucson",
+			"multiplier": 1.15
+		},
+		{
+			"id": "middle-suv",
+			"name": "Střední a velké SUV",
+			"examples": "Škoda Kodiaq, BMW X3, Audi Q5, Mercedes-Benz GLC, Volvo XC60",
+			"multiplier": 1.25
+		},
+		{
+			"id": "large-suv",
+			"name": "Velká SUV",
+			"examples": "BMW X5, Audi Q7, VW Touareg, Mercedes-Benz GLE, Volvo XC90",
+			"multiplier": 1.35
+		},
+		{
+			"id": "mpv",
+			"name": "7místná SUV a MPV",
+			"examples": "Škoda Kodiaq 7 míst, VW Sharan, Ford Galaxy, Seat Alhambra",
+			"multiplier": 1.35
+		},
+		{
+			"id": "van",
+			"name": "Velké dodávky a mikrobusy",
+			"examples": "VW Transporter, Mercedes-Benz Vito, Ford Transit Custom, Renault Trafic",
+			"multiplier": 1.5
+		}
+	]
 }
